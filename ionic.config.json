@@ -1,0 +1,15 @@
+{
+  "name": "smartphoneApp",
+  "app_id": "10d0d3f9",
+  "type": "ionic1",
+  "integrations": {
+    "cordova": {},
+    "gulp": {}
+  },
+  "watchPatterns": [
+    "scss/**/*",
+    "www/**/*",
+    "!www/lib/**/*",
+    "!www/**/*.map"
+  ]
+}

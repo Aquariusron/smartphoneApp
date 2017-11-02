@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link rel="manifest" href="manifest.json">
+
+    <!-- un-comment this code to enable service worker
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(() => console.log('service worker installed'))
+          .catch(err => console.log('Error', err));
+      }
+    </script>-->
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/services.js"></script>
+
+   <!-- add october 24 -->
+   <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+   -->
+   
+   <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+   <script type="text/javascript">
+    //initialize_mapで初期状態の地図を定義
+     var map_canvas;
+
+     function initialize_map() {
+       // 地図の中心位置を指定
+       var map_center = new google.maps.LatLng(35.4472820, 139.6227120);
+       // 地図の初期状態を設定 
+       var map_options = {
+        //mapTypeId: google.maps.MapTypeId.ROADMAP,
+        center: map_center,
+        zoom: 14,
+        mapTypeControlOptions: { mapTypeIds: ['sample', google.maps.MapTypeId.ROADMAP] }/*表示タイプの指定*/
+      };
+       // 地名の配列を作成
+       var data = [
+            ['35.4472820', '139.6227120', '野毛山動物園'],
+            ['35.456973', '139.630625', '横浜美術館'],
+            ['35.455937', '139.629876', '三菱みなとみらい技術館']
+       ];
+
+       map_canvas = new google.maps.Map(document.getElementById("map_canvas"), map_options);
+
+        //　配列を回すfor文
+      for (var i = 0; i < data.length; i++) {
+        create_marker(data[i][0], data[i][1], data[i][2]);
+      }
+      
+    }
+
+    
+      // 緯度経度の入った配列を渡して地図を表示させるようにしたい。
+      function create_marker(lat, lng, name) {
+       // 地図、緯度経度、重なり回避の設定を入れた配列
+            var marker_options = {
+                map: map_canvas,
+                position: new google.maps.LatLng(lat, lng),
+                zIndex: 0,
+                title: name,
+            };
+      // 地図の情報が入っているmarker_optionsを渡して初期のマーカーを作成する
+      var marker = new google.maps.Marker(marker_options);
+     
+        //   // 地図のレイアウトを決めているjson
+        //   var styleOptions = 
+          // [{
+          //   "elementType": "geometry",
+          //   "stylers": [
+          //     {
+          //       "color": "#ebe3cd"
+          //     }
+          //   ]
+          // },
+          // {
+          //   "elementType": "labels.text.fill",
+          //   "stylers": [
+          //     {
+          //       "color": "#523735"
+          //     }
+          //   ]
+          // },
+          // {
+          //   "elementType": "labels.text.stroke",
+          //   "stylers": [
+          //     {
+          //       "color": "#f5f1e6"
+          //     }
+          //   ]
+          // },
+          // {
+          //   "featureType": "administrative",
+          //   "elementType": "geometry.stroke",
+          //   "stylers": [
+          //     {
+          //       "color": "#c9b2a6"
+          //     }
+          //   ]
+          // },
+          // {
+          //   "featureType": "administrative.land_parcel",
+          //   "elementType": "geometry.stroke",
+          //   "stylers": [
+          //     {
+          //       "color": "#dcd2be"
+          //     }
+          //   ]
+          // },
+          // {
+          //   "featureType": "administrative.land_parcel",
+          //   "elementType": "labels",
+          //   "stylers": [
+          //     {
+          //       "visibility": "off"
+          //     }
+          //   ]
+          // },
+          // {
+          //   "featureType": "administrative.land_parcel",
+          //   "elementType": "labels.text.fill",
+          //   "stylers": [
+          //     {
+          //       "color": "#ae9e90"
+          //     }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "landscape.natural",
+        //     "elementType": "geometry",
+        //     "stylers": [
+        //       {
+        //         "color": "#dfd2ae"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "landscape.natural",
+        //     "elementType": "geometry.fill",
+        //     "stylers": [
+        //       {
+        //         "visibility": "off"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "poi",
+        //     "elementType": "geometry",
+        //     "stylers": [
+        //       {
+        //         "color": "#dfd2ae"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "poi",
+        //     "elementType": "labels.text",
+        //     "stylers": [
+        //       {
+        //         "visibility": "off"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "poi",
+        //     "elementType": "labels.text.fill",
+        //     "stylers": [
+        //       {
+        //         "color": "#93817c"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "poi.park",
+        //     "elementType": "geometry.fill",
+        //     "stylers": [
+        //       {
+        //         "color": "#70bb76"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "poi.park",
+        //     "elementType": "labels.text.fill",
+        //     "stylers": [
+        //       {
+        //         "color": "#75565c"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "road",
+        //     "elementType": "geometry",
+        //     "stylers": [
+        //       {
+        //         "color": "#f5f1e6"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "road.arterial",
+        //     "stylers": [
+        //       {
+        //         "visibility": "off"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "road.arterial",
+        //     "elementType": "geometry",
+        //     "stylers": [
+        //       {
+        //         "color": "#fdfcf8"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "road.highway",
+        //     "elementType": "geometry",
+        //     "stylers": [
+        //       {
+        //         "color": "#f8c967"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "road.highway",
+        //     "elementType": "geometry.stroke",
+        //     "stylers": [
+        //       {
+        //         "color": "#ffce6c"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "road.highway",
+        //     "elementType": "labels",
+        //     "stylers": [
+        //       {
+        //         "color": "#806736"
+        //       },
+        //       {
+        //         "visibility": "off"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "road.highway.controlled_access",
+        //     "elementType": "geometry",
+        //     "stylers": [
+        //       {
+        //         "color": "#e98d58"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "road.highway.controlled_access",
+        //     "elementType": "geometry.stroke",
+        //     "stylers": [
+        //       {
+        //         "color": "#db8555"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "road.local",
+        //     "stylers": [
+        //       {
+        //         "color": "#e9c3b6"
+        //       },
+        //       {
+        //         "visibility": "off"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "road.local",
+        //     "elementType": "labels",
+        //     "stylers": [
+        //       {
+        //         "visibility": "off"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "road.local",
+        //     "elementType": "labels.text.fill",
+        //     "stylers": [
+        //       {
+        //         "color": "#806b63"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "transit.line",
+        //     "elementType": "geometry",
+        //     "stylers": [
+        //       {
+        //         "color": "#dfd2ae"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "transit.line",
+        //     "elementType": "labels.text.fill",
+        //     "stylers": [
+        //       {
+        //         "color": "#8f7d77"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "transit.line",
+        //     "elementType": "labels.text.stroke",
+        //     "stylers": [
+        //       {
+        //         "color": "#ebe3cd"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "transit.station",
+        //     "elementType": "geometry",
+        //     "stylers": [
+        //       {
+        //         "color": "#dfd2ae"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "water",
+        //     "elementType": "geometry.fill",
+        //     "stylers": [
+        //       {
+        //         "color": "#8bd9d6"
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "featureType": "water",
+        //     "elementType": "labels.text.fill",
+        //     "stylers": [
+        //       {
+        //         "color": "#92998d"
+        //       }
+        //     ]
+        //   }
+        // ];
+      
+  
+        var styleOptions = 
+          [{
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#ebe3cd"
+              }
+            ]
+          }
+        ];
+  
+
+  
+  //var latlng = new google.maps.LatLng(35.710333,139.777148);
+  // var myOptions = {
+  //   zoom: 18,/*拡大比率*/
+  //   center: latlng,/*表示枠内の中心点*/
+  //   mapTypeControlOptions: { mapTypeIds: ['sample', google.maps.MapTypeId.ROADMAP] }/*表示タイプの指定*/
+  // };
+  //var map = new google.maps.Map(document.getElementById('map_canvas'), map_options);
+ 
+//   /*取得スタイルの貼り付け*/
+//   var styleOptions = [
+//   {
+//     &quot;stylers&quot;: [
+//       { &quot;saturation&quot;: -100 },
+//       { &quot;visibility&quot;: &quot;simplified&quot; },
+//       { &quot;lightness&quot;: 22 }
+//     ]
+//   }
+// ];
+    // var styledMapOptions = {name: '横浜市'};
+    // var sampleType = new google.maps.StyledMapType(styleOptions, styledMapOptions);
+    // map_canvas.mapTypes.set('sample', sampleType);
+    // map_canvas.setMapTypeId('sample');
+
+     // DOMリスナで動作コードとイベントコードを切り離している
+     // loadイベントハンドラを置き換えている？
+     google.maps.event.addDomListener(window, "load", initialize_map);
+}
+
+ </script>
+ </head>
+  <body ng-app="starter">
+    <!--
+      The nav bar that will be updated as we navigate between views.
+    -->
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+    </ion-nav-bar>
+    <!--
+      The views will be rendered in the <ion-nav-view> directive below
+      Templates are in the /templates folder (but you could also
+      have templates inline in this html file if you'd like).
+    -->
+    <ion-nav-view></ion-nav-view>
+  </body>
+</html>
